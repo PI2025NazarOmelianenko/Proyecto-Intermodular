@@ -1,0 +1,28 @@
+[
+  {
+    "id_reserva_local": 1,
+    "id_recurso": 1,
+    "recurso_nombre": "Sala de Reuniones A",
+    "id_usuario": 4,
+    "fecha": "2026-03-10",
+    "hora_inicio": "08:00",
+    "hora_fin": "10:00",
+    "numero_plazas": 5,
+    "motivo": "Reunión",
+    "observaciones": null,
+    "coste": 15.00
+  },
+  {
+    "id_reserva_local": 2,
+    "id_recurso": 1,
+    "recurso_nombre": "Sala de Reuniones A",
+    "id_usuario": 4,
+    "fecha": "2026-03-17",
+    "hora_inicio": "08:00",
+    "hora_fin": "10:00",
+    "numero_plazas": 5,
+    "motivo": "Reunión",
+    "observaciones": "Repetición",
+    "coste": 15.00
+  }
+]

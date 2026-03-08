@@ -1,0 +1,10 @@
+{ 
+  
+  "id_recurso": 1,
+  "fecha": "2026-04-07",
+  "hora_inicio": "08:00",
+  "hora_fin": "10:00",
+  "numero_plazas": 6,
+  "motivo": "Reunión",
+  "observaciones": "Con proyector"
+}

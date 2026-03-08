@@ -1,0 +1,13 @@
+{
+  "id_reserva_local": 3,
+  "id_recurso": 1,
+  "recurso_nombre": "Sala de Reuniones A",
+  "id_usuario": 4,
+  "fecha": "2026-04-07",
+  "hora_inicio": "08:00",
+  "hora_fin": "10:00",
+  "numero_plazas": 6,
+  "motivo": "Reunión",
+  "observaciones": "Con proyector",
+  "coste": 15.00
+}
