@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rick and Morty API - Swagger UI</title>
+  <link rel="stylesheet" type="text/css" href="./swagger-ui-dist/swagger-ui.css" />
+  <link rel="icon" type="image/png" href="./swagger-ui-dist/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="./swagger-ui-dist/favicon-16x16.png" sizes="16x16" />
+  <style>
+    html
+    {
+      box-sizing: border-box;
+      overflow: -moz-scrollbars-vertical;
+      overflow-y: scroll;
+    }
+    *,
+    *:before,
+    *:after
+    {
+      box-sizing: inherit;
+    }
+
+    body
+    {
+      margin:0;
+      background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+<div id="swagger-ui"></div>
+
+<script src="./swagger-ui-dist/swagger-ui-bundle.js" charset="UTF-8"> </script>
+<script src="./swagger-ui-dist/swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
+<script>
+  window.onload = function() {
+    // Begin Swagger UI call region
+    const ui = SwaggerUIBundle({
+      spec: {
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API de Reservas de Recursos deportivos",
+    "description": "API REST para gestionar reservas de recursos deportivos (salas, pistas, equipamiento) Permite a usuarios normales crear, consultar, modificar y eliminar sus propias reservas.\n",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api/v1",
+      "description": "Servidor de desarrollo local"
+    }
+  ],
+  "components": {
+    "schemas": {
+      "Reserva": {
+        "type": "object",
+        "description": "Reserva completa tal como la devuelve el servidor",
+        "properties": {
+          "id_reserva_local": {
+            "type": "integer",
+            "example": 1
+          },
+          "id_recurso": {
+            "type": "integer",
+            "example": 1
+          },
+          "recurso_nombre": {
+            "type": "string",
+            "example": "Sala de Reuniones A"
+          },
+          "id_usuario": {
+            "type": "integer",
+            "description": "Extraído del token JWT por el backend",
+            "example": 4
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-04-07"
+          },
+          "hora_inicio": {
+            "type": "string",
+            "format": "time",
+            "example": "08:00"
+          },
+          "hora_fin": {
+            "type": "string",
+            "format": "time",
+            "example": "10:00"
+          },
+          "numero_plazas": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 6
+          },
+          "motivo": {
+            "type": "string",
+            "maxLength": 20,
+            "example": "Reunión"
+          },
+          "observaciones": {
+            "type": "string",
+            "maxLength": 20,
+            "nullable": true,
+            "example": "Con proyector"
+          },
+          "coste": {
+            "type": "number",
+            "format": "float",
+            "description": "Calculado por el backend",
+            "example": 15
+          }
+        }
+      },
+      "ReservaInput": {
+        "type": "object",
+        "description": "Datos que envía el cliente para crear o modificar una reserva",
+        "required": [
+          "id_recurso",
+          "fecha",
+          "hora_inicio",
+          "hora_fin",
+          "numero_plazas"
+        ],
+        "properties": {
+          "id_recurso": {
+            "type": "integer",
+            "example": 1
+          },
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-04-07"
+          },
+          "hora_inicio": {
+            "type": "string",
+            "format": "time",
+            "example": "08:00"
+          },
+          "hora_fin": {
+            "type": "string",
+            "format": "time",
+            "example": "10:00"
+          },
+          "numero_plazas": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 6
+          },
+          "motivo": {
+            "type": "string",
+            "maxLength": 20,
+            "example": "Reunión"
+          },
+          "observaciones": {
+            "type": "string",
+            "maxLength": 20,
+            "nullable": true,
+            "example": "Con proyector"
+          }
+        }
+      },
+      "ReservaPatch": {
+        "type": "object",
+        "description": "Datos que envía el cliente para modificar una reserva existente. Todos los campos son opcionales.",
+        "properties": {
+          "fecha": {
+            "type": "string",
+            "format": "date",
+            "example": "2026-04-14"
+          },
+          "hora_inicio": {
+            "type": "string",
+            "format": "time",
+            "example": "10:00"
+          },
+          "hora_fin": {
+            "type": "string",
+            "format": "time",
+            "example": "12:00"
+          },
+          "numero_plazas": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 4
+          },
+          "motivo": {
+            "type": "string",
+            "maxLength": 20,
+            "example": "Formación"
+          },
+          "observaciones": {
+            "type": "string",
+            "maxLength": 20,
+            "nullable": true,
+            "example": null
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "description": "Respuesta de error",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Datos de entrada inválidos"
+          },
+          "detalles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "campo": {
+                  "type": "string",
+                  "example": "fecha"
+                },
+                "mensaje": {
+                  "type": "string",
+                  "example": "La fecha no puede ser anterior a hoy"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/reservas": {
+      "get": {
+        "summary": "Listar reservas del usuario autenticado",
+        "description": "Devuelve todas las reservas pertenecientes al usuario identificado por el token JWT.",
+        "responses": {
+          "200": {
+            "description": "Lista de reservas obtenida correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Reserva"
+                  }
+                },
+                "example": [
+                  {
+                    "id_reserva_local": 1,
+                    "id_recurso": 1,
+                    "recurso_nombre": "Sala de Reuniones A",
+                    "id_usuario": 4,
+                    "fecha": "2026-03-10",
+                    "hora_inicio": "08:00",
+                    "hora_fin": "10:00",
+                    "numero_plazas": 5,
+                    "motivo": "Reunión",
+                    "observaciones": null,
+                    "coste": 15
+                  },
+                  {
+                    "id_reserva_local": 2,
+                    "id_recurso": 1,
+                    "recurso_nombre": "Sala de Reuniones A",
+                    "id_usuario": 4,
+                    "fecha": "2026-03-17",
+                    "hora_inicio": "08:00",
+                    "hora_fin": "10:00",
+                    "numero_plazas": 5,
+                    "motivo": "Reunión",
+                    "observaciones": "Repetición",
+                    "coste": 15
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente o inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No autorizado",
+                  "detalles": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Crear una nueva reserva",
+        "description": "Crea una reserva para el usuario autenticado. El backend asigna el id, el coste y el id_usuario automáticamente.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservaInput"
+              },
+              "example": {
+                "id_recurso": 1,
+                "fecha": "2026-04-07",
+                "hora_inicio": "08:00",
+                "hora_fin": "10:00",
+                "numero_plazas": 6,
+                "motivo": "Reunión",
+                "observaciones": "Con proyector"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva creada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                },
+                "example": {
+                  "id_reserva_local": 3,
+                  "id_recurso": 1,
+                  "recurso_nombre": "Sala de Reuniones A",
+                  "id_usuario": 4,
+                  "fecha": "2026-04-07",
+                  "hora_inicio": "08:00",
+                  "hora_fin": "10:00",
+                  "numero_plazas": 6,
+                  "motivo": "Reunión",
+                  "observaciones": "Con proyector",
+                  "coste": 15
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación en los datos enviados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Datos de entrada inválidos",
+                  "detalles": [
+                    {
+                      "campo": "hora_fin",
+                      "mensaje": "hora_fin debe ser posterior a hora_inicio"
+                    },
+                    {
+                      "campo": "fecha",
+                      "mensaje": "La fecha no puede ser anterior a hoy"
+                    },
+                    {
+                      "campo": "numero_plazas",
+                      "mensaje": "El número de plazas supera la capacidad del recurso"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente o inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No autorizado",
+                  "detalles": []
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reservas/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "id_reserva_local de la reserva",
+          "schema": {
+            "type": "integer",
+            "example": 1
+          }
+        }
+      ],
+      "get": {
+        "summary": "Obtener el detalle de una reserva",
+        "description": "Devuelve los datos completos de una reserva concreta identificada por su id_reserva_local.",
+        "responses": {
+          "200": {
+            "description": "Reserva encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                },
+                "example": {
+                  "id_reserva_local": 1,
+                  "id_recurso": 1,
+                  "recurso_nombre": "Sala de Reuniones A",
+                  "id_usuario": 4,
+                  "fecha": "2026-03-10",
+                  "hora_inicio": "08:00",
+                  "hora_fin": "10:00",
+                  "numero_plazas": 5,
+                  "motivo": "Reunión",
+                  "observaciones": null,
+                  "coste": 15
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente o inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No autorizado",
+                  "detalles": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserva no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Reserva no encontrada",
+                  "detalles": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Modificar una reserva existente",
+        "description": "Actualiza uno o varios campos de una reserva. Solo el usuario propietario puede modificarla.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReservaPatch"
+              },
+              "example": {
+                "fecha": "2026-04-14",
+                "hora_inicio": "10:00",
+                "hora_fin": "12:00",
+                "numero_plazas": 4,
+                "motivo": "Formación"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reserva modificada correctamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Reserva"
+                },
+                "example": {
+                  "id_reserva_local": 1,
+                  "id_recurso": 1,
+                  "recurso_nombre": "Sala de Reuniones A",
+                  "id_usuario": 4,
+                  "fecha": "2026-04-14",
+                  "hora_inicio": "10:00",
+                  "hora_fin": "12:00",
+                  "numero_plazas": 4,
+                  "motivo": "Formación",
+                  "observaciones": null,
+                  "coste": 15
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error de validación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Datos de entrada inválidos",
+                  "detalles": [
+                    {
+                      "campo": "hora_fin",
+                      "mensaje": "hora_fin debe ser posterior a hora_inicio"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token JWT ausente o inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No autorizado",
+                  "detalles": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserva no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Reserva no encontrada",
+                  "detalles": []
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar una reserva",
+        "description": "Elimina una reserva existente. Solo el usuario propietario puede eliminarla. Si el recurso o usuario tiene restricciones ON DELETE RESTRICT en la BBDD, el backend devuelve 409.",
+        "responses": {
+          "204": {
+            "description": "Reserva eliminada correctamente."
+          },
+          "401": {
+            "description": "Token JWT ausente o inválido",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No autorizado",
+                  "detalles": []
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserva no encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "Reserva no encontrada",
+                  "detalles": []
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflicto. No se puede eliminar porque tiene dependencias en la base de datos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": "No se puede eliminar la reserva",
+                  "detalles": [
+                    {
+                      "campo": "id_reserva_local",
+                      "mensaje": "Existen registros dependientes que impiden la eliminación"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}, // Path to your OpenAPI YAML file
+      dom_id: '#swagger-ui',
+      deepLinking: true,
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIStandalonePreset
+      ],
+      plugins: [
+        SwaggerUIBundle.plugins.DownloadUrl
+      ],
+      layout: "StandaloneLayout"
+    });
+    // End Swagger UI call region
+
+    window.ui = ui;
+  };
+</script>
+</body>
+</html>
