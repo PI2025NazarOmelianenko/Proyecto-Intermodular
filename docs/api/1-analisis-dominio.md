@@ -80,3 +80,7 @@ DELETE /reservas/{id}         → Eliminar una reserva
  
 
 El parámetro  {id}  corresponde a  "id_reserva_local" . Aunque en la BBDD la PK es compuesta ( "id_recurso"  +  "id_reserva_local" ), a nivel de API se usa  "id_reserva_local" como identificador de ruta, ya que resulta más sencillo para el cliente y evita rutas añadidas innmecesarias.  El "id_recurso" se incluye en el body cuando es necesario.
+
+## 5. Validación Swagger UI
+
+![Validación Swagger Editor](/img/swagger-validacion.png)
