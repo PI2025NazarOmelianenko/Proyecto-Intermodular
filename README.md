@@ -1,39 +1,41 @@
-# Proyecto Intermodular — Sistema de Reservas de Recursos
+# Proyecto Intermodular — Sistema de Reservas Deportivas
 
 **Nazar Omelianenko · DAM 2025-2026 · IES Severo Ochoa**
 
-Sistema de gestión de reservas para Aurea Consulting, desarrollado como PoC (Proof of Concept) durante el primer curso del ciclo DAM.
+PoC (Proof of Concept) de un sistema de gestión de reservas para instalaciones deportivas, desarrollado por Aurea Consulting como proyecto integrador del primer curso de DAM.
 
 ---
 
-## Descripción
+## Repositorios del proyecto
 
-Aplicación web para gestionar reservas de recursos de una consultora tecnológica ficticia. Incluye frontend HTML/CSS, diseño de base de datos relacional y documentación de API REST.
+| Repositorio | Descripción | Enlace |
+|---|---|---|
+| `Proyecto-Intermodular` | Documentación, base de datos, API REST y web corporativa | [Ver repositorio](https://github.com/PI2025NazarOmelianenko/Proyecto-Intermodular) |
+| `reservas-deportivas` | Aplicación JavaFX + JDBC — código fuente del PoC | [Ver repositorio](https://github.com/PI2025NazarOmelianenko/reservas-deportivas) |
 
 ---
 
-## Estructura del repositorio
+## Estructura de este repositorio
 
 | Carpeta | Contenido |
 |---|---|
-| `proyecto-consultora/` | Frontend HTML/CSS — sitio web de Aurea Consulting |
-| `docs/api/` | Documentación OpenAPI + ejemplos JSON de la API REST |
+| `proyecto-consultora/` | Web corporativa HTML/CSS de Aurea Consulting |
+| `docs/api/` | Documentación OpenAPI 3.0 + ejemplos JSON |
 | `docs/db/` | Script SQL del esquema de base de datos (MariaDB) |
-| `docs/diagrams/` | Diagramas del proyecto |
 | `database/` | Scripts y backups de base de datos |
-| `src/` | Código fuente de la aplicación |
+| `src/` | Código fuente auxiliar |
 
 ---
 
-## Tecnologías
+## Tecnologías utilizadas
 
-- HTML5 / CSS3
-- MariaDB / SQL
-- OpenAPI 3.0 / Swagger
-- Java (en desarrollo)
+- Java · JavaFX · JDBC
+- MariaDB · SQL
+- HTML5 · CSS3
+- OpenAPI 3.0 · Swagger UI
 
 ---
 
-## Equipo docente
+## Visión de segundo curso
 
-Proyecto revisado por el equipo docente de Proyecto Intermodular 1CFSQ — IES Severo Ochoa.
+Escalado del PoC hacia una plataforma completa con autenticación de usuarios, API REST desplegada, aplicación móvil y panel de administración.
