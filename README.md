@@ -23,7 +23,7 @@ PoC (Proof of Concept) de un sistema de gestión de reservas para instalaciones 
 | `docs/api/` | Documentación OpenAPI 3.0 + ejemplos JSON |
 | `docs/db/` | Script SQL del esquema de base de datos (MariaDB) |
 | `database/` | Scripts y backups de base de datos |
-| `src/` | Código fuente auxiliar |
+| `scr/` | Código fuente auxiliar |
 
 ---
 
